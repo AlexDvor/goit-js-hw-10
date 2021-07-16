@@ -10,8 +10,8 @@ const DEBOUNCE_DELAY = 300;
 const inputValue = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list')
 
-inputValue.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
+inputValue.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function onSearch(e) {
 
@@ -25,24 +25,18 @@ function onSearch(e) {
   API.fetchCountries(formValue)
     .then(renderCountryCard)
     .catch(fetchError);
-    
-
 }
 
 
 function renderCountryCard(data) {
-  
 
   if (data.length === 1) {
-   const card = countryCardTpl(data);
-    countryList.innerHTML = card;
-    console.log(getLanguages(data))
+    parsPage(countryCardTpl, data)
   }
 
   if (data.length >= 2 && data.length <= 10) {
+    parsPage(countryCardsListTpl, data);
     Notify.info('Too many matches found. Please enter a more specific name.');
-    const card = countryCardsListTpl(data);
-    countryList.innerHTML = card;
   }
   
 }
@@ -59,7 +53,8 @@ Notify.failure('Oops, there is no country with that name',{width: '360px'});
 }
 
 
-function getLanguages(data) {
-  const lengData = data.map(leng => leng.name)
-  return lengData.join('')
+function parsPage(templates, array) {
+  const card = templates(array);
+  countryList.innerHTML = card;
+ 
 }
