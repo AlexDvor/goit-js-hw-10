@@ -1,15 +1,14 @@
 
 import './css/styles.css';
 import API from './js/fetchCountries';
-import debounce from 'lodash.debounce'
-import countryCardTpl from './templates/card.hbs'
-import countryCardsListTpl from './templates/cards.hbs'
+import debounce from 'lodash.debounce';
+import countryCardTpl from './templates/card.hbs';
+import countryCardsListTpl from './templates/cards.hbs';
+import { Notify } from "notiflix";
 
 const DEBOUNCE_DELAY = 300;
 const inputValue = document.querySelector('#search-box');
 const countryList = document.querySelector('.country-list')
-
-// // ________________________________
 
 inputValue.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
@@ -39,7 +38,8 @@ function renderCountryCard(data) {
   countryList.innerHTML = card;
   }
 
-  if (data.length >= 2 && data.length <=10 ) {
+  if (data.length >= 2 && data.length <= 10) {
+  Notify.info('Too many matches found. Please enter a more specific name.');
   const cards = countryCardsListTpl(data);
   countryList.innerHTML = cards;
   }
@@ -48,27 +48,13 @@ function renderCountryCard(data) {
 
 
 function clearCards() {
-countryList.innerHTML = '';
+  countryList.innerHTML = '';
   
 }
-function fetchError(error) {
-  console.log(error)
+
+
+function fetchError() {
+Notify.failure('Oops, there is no country with that name',{width: '360px'});
 }
 
-
-
-
-
-// // __________________________________________
-
-// const listCountry = document.querySelector('.country-list')
-// console.log(listCountry)
-
-
-
-// function checkLength (arr) {
-//     if (arr.length > 10) {
-//         console.log('Введи конкретно страну', arr)
-//     }
-// }
 
