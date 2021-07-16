@@ -34,14 +34,15 @@ function renderCountryCard(data) {
   
 
   if (data.length === 1) {
-  const card = countryCardTpl(data);
-  countryList.innerHTML = card;
+   const card = countryCardTpl(data);
+    countryList.innerHTML = card;
+    console.log(getLanguages(data))
   }
 
   if (data.length >= 2 && data.length <= 10) {
-  Notify.info('Too many matches found. Please enter a more specific name.');
-  const cards = countryCardsListTpl(data);
-  countryList.innerHTML = cards;
+    Notify.info('Too many matches found. Please enter a more specific name.');
+    const card = countryCardsListTpl(data);
+    countryList.innerHTML = card;
   }
   
 }
@@ -58,3 +59,7 @@ Notify.failure('Oops, there is no country with that name',{width: '360px'});
 }
 
 
+function getLanguages(data) {
+  const lengData = data.map(leng => leng.name)
+  return lengData.join('')
+}
